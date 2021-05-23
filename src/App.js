@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import PropTypes from 'prop-types';
+import {List, ListItem, ListItemText, makeStyles, Paper, Divider} from "@material-ui/core";
 
-function App() {
+const fallbackData = ['name1', 'name2', 'name3', 'name4', 'name5'];
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: "1.5rem",
+  },
+}));
+
+export default function App({data}) {
+  const input = data ? data : fallbackData;
+  const {container} = useStyles();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={container}>
+      <Paper elevation={3}>
+        <List>
+          {input.map((name, index) =>
+            (<div key={index}>
+              <ListItem>
+                <ListItemText primary={name} />
+              </ListItem>
+              {index !== (input.length - 1) && (<Divider/>)}
+            </div>)
+          )}
+        </List>
+      </Paper>
     </div>
-  );
+  )
+
 }
 
-export default App;
+App.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.string).isRequired
+}
